@@ -1,0 +1,18 @@
+1999-06-14  Loic Dachary  <loic@ceic.com>
+
+	* rewrite all according to new Text::Query class
+
+1999-06-01  Loic Dachary  <loic@ceic.com>
+
+	* conf/mysql.pl (dbconnect): use 'base' param instead of hardwired
+	mysql
+
+1999-05-31  Loic DACHARY  <loic@home.ceic.com>
+
+	* Relase 0.02
+	
+	* Added Fulcrum support
+
+1999-05-28  Loic DACHARY  <loic@home.ceic.com>
+
+	*  First release
