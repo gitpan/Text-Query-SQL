@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQLMySQL.pm,v 1.3 1999/07/01 11:32:11 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQLMySQL.pm,v 1.4 2000/05/03 13:16:19 loic Exp $
 #
 package Text::Query::BuildSQLMySQL;
 
@@ -43,7 +43,7 @@ sub build_near {
       } else {
 	  my($max) = $self->{parseopts}{-near};
 	  my($op) = "([[:space:]]+[[:alnum:]]+){0,$max}[[:space:]]+";
-	  $t = "$$l[2]$op$$r[2]";
+	  $t = "($$l[2]$op$$r[2])|($$r[2]$op$$l[2])";
       }
       return [ 'literal', $$l[1], $t ];
   }

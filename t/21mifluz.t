@@ -20,11 +20,11 @@ $Data::Dumper::Indent = 0;
 				  );
     $question = "10";
     $query->prepare($question);
-    ok(Dumper($query->{'matchexp'}), "['literal','field1',10]", "prepare $question");
+    ok(Dumper($query->{'matchexp'}), "['literal','field1','10']", "prepare $question");
 
     $question = "+10 -20 30";
     $query->prepare($question);
-    ok(Dumper($query->{'matchexp'}), "['or','field1',['mandatory','field1',['literal','field1',10]],['forbiden','field1',['literal','field1',20]],['literal','field1',30]]", "prepare $question");
+    ok(Dumper($query->{'matchexp'}), "['or','field1',['mandatory','field1',['literal','field1','10']],['forbiden','field1',['literal','field1','20']],['literal','field1','30']]", "prepare $question");
     
 }
 

@@ -27,7 +27,7 @@ use vars qw(@ISA $VERSION);
 use Text::Query::Build;
 use Carp;
 
-$VERSION = "0.07";
+$VERSION = "0.08";
 
 @ISA = qw(Text::Query::Build);
 

@@ -26,9 +26,9 @@ use strict;
 
 use ExtUtils::MakeMaker;
 
-version_check('Text::Query', '0.07', 'require Text::Query;');
-version_check('DBI', '1.06', 'require DBI;');
-version_check('Data::Dumper', '2.09', 'require Data::Dumper;');
+version_check('Text::Query', '0.08', 'require Text::Query;');
+version_check('DBI', '1.13', 'require DBI;');
+version_check('Data::Dumper', '2.101', 'require Data::Dumper;');
 
 #
 # Check that package $what is installed and that

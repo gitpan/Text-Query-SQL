@@ -1,3 +1,15 @@
+Wed Sep 13 16:50:30 2000  Loic Dachary  <loic@senga.org>
+
+	* Relase 0.08
+
+	* Makefile.PL: minor fixes for perl-5.6.0
+
+Wed May 03 15:03:51 2000  Loic Dachary  <loic@senga.org>
+
+	* lib/Text/Query/BuildSQLMySQL.pm (build_near): patch from
+          steveHalasz@users.sourceforge.net to fix proximity inversion
+	  bug. Update tests.
+
 Fri Apr 21 11:39:51 2000  Loic Dachary  <loic@senga.org>
 
 	* Relase 0.07

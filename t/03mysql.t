@@ -69,7 +69,7 @@ plan test => 21;
 
     $question = "word1 near word2";
     $query->prepare($question);
-    ok($query->matchstring(), " ( field1 regexp '[[:<:]][wW][oO][rR][dD]1([[:space:]]+[[:alnum:]]+){0,10}[[:space:]]+[wW][oO][rR][dD]2[[:>:]]' ) ", "prepare $question");
+    ok($query->matchstring(), " ( field1 regexp '[[:<:]]([wW][oO][rR][dD]1([[:space:]]+[[:alnum:]]+){0,10}[[:space:]]+[wW][oO][rR][dD]2)|([wW][oO][rR][dD]2([[:space:]]+[[:alnum:]]+){0,10}[[:space:]]+[wW][oO][rR][dD]1)[[:>:]]' ) ", "prepare $question");
 
     $question = "not word1";
     $query->prepare($question);
@@ -105,7 +105,7 @@ plan test => 21;
 
     $question = "field2: ( 20 and 21 or field1: 21 ) or field1: 100 or 'field2:' and 30 near 40";
     $query->prepare($question);
-    ok($query->matchstring(), " (  (  (  ( field2 regexp '[[:<:]]20[[:>:]]' and field2 regexp '[[:<:]]21[[:>:]]' )  or field1 regexp '[[:<:]]21[[:>:]]' )  or field1 regexp '[[:<:]]100[[:>:]]' or  ( field1 regexp '[[:<:]][fF][iI][eE][lL][dD]2:[[:>:]]' and field1 regexp '[[:<:]]30([[:space:]]+[[:alnum:]]+){0,10}[[:space:]]+40[[:>:]]' )  )  ) ", "prepare $question");
+    ok($query->matchstring(), " (  (  (  ( field2 regexp '[[:<:]]20[[:>:]]' and field2 regexp '[[:<:]]21[[:>:]]' )  or field1 regexp '[[:<:]]21[[:>:]]' )  or field1 regexp '[[:<:]]100[[:>:]]' or  ( field1 regexp '[[:<:]][fF][iI][eE][lL][dD]2:[[:>:]]' and field1 regexp '[[:<:]](30([[:space:]]+[[:alnum:]]+){0,10}[[:space:]]+40)|(40([[:space:]]+[[:alnum:]]+){0,10}[[:space:]]+30)[[:>:]]' )  )  ) ", "prepare $question");
 
     $question = "field2,field3: ( 20 and 21 )";
     $query->prepare($question);
