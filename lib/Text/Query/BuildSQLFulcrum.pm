@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQLFulcrum.pm,v 1.1.1.1 1999/06/16 10:29:03 loic Exp $
+# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQLFulcrum.pm,v 1.2 1999/07/01 11:32:11 loic Exp $
 #
 package Text::Query::BuildSQLFulcrum;
 
@@ -38,7 +38,7 @@ sub resolve {
     #
     my($fill_fields) = ( @{$scope} > 0 ) ? $$t[1] ne $scope->[0] : 1;
 
-    if(!ref($$t[2])) {
+    if(!ref($$t[2]) || $$t[0] eq 'true') {
 	return $self->resolve_literal($t, $fill_fields);
     } else {
 	my(@operands);
@@ -90,10 +90,34 @@ sub resolve {
     }
 }
 
+sub has_relevance {
+    shift->SUPER::has_relevance();
+    return 1;
+}
+
 sub resolve_literal {
     my($self, $t, $fill_fields) = @_;
 
-    my($value) = $$t[0] eq 'true' ? " '' " : " '" . $self->quote($$t[2]) . "' ";
+    my($true_value) = $$t[0] eq 'true';
+    my($weight) = '';
+    if($self->relevance_needed()) {
+	#
+	# At present relevance ranking is only needed for simple requests
+	#
+	if($true_value) {
+	    #
+	    # The 'true' value term has default weight (1)
+	    #
+	    $t = $$t[2];
+	} else {
+	    #
+	    # All search terms have a 10 weight
+	    #
+	    $weight = ' weight 10';
+	}
+    }
+    
+    my($value) = " '" . $self->quote($$t[2]) . "'$weight ";
 
     if($fill_fields) {
 	return $self->fill_fields(" __FIELD__ contains $value", $$t[1]);

@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQL.pm,v 1.3 1999/06/22 13:04:33 loic Exp $
+# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQL.pm,v 1.4 1999/07/01 11:32:11 loic Exp $
 #
 package Text::Query::BuildSQL;
 
@@ -27,7 +27,7 @@ use vars qw(@ISA $VERSION);
 use Text::Query::Build;
 use Carp;
 
-$VERSION = "0.04";
+$VERSION = "0.05";
 
 @ISA = qw(Text::Query::Build);
 
@@ -51,7 +51,6 @@ sub build_final_expression {
 #  show($t1); print "\n";
 
   $t1 = $self->resolve([], $t1);
-
   my($where);
   if($t1 =~ /__FIELD__/s) {
       #
@@ -74,7 +73,12 @@ sub build_final_expression {
   } else {
       $select = " ( $where ) ";
   }
-  return $self->SUPER::build_final_expression($select);
+
+  $t1 = $self->SUPER::build_final_expression($select);
+  
+  $self->relevance_reset();
+
+  return $t1;
 }
 
 #
@@ -245,6 +249,18 @@ sub scope_set {
     return $homogenous;
 }
 
+sub relevance_needed {
+    return exists(shift->{'need_relevance'});
+}
+
+sub relevance_reset {
+    delete(shift->{'need_relevance'});
+}
+
+sub has_relevance {
+    shift->{'need_relevance'} = 1;
+    return undef;
+}
 
 sub sortplusminus {
     my($self, $t) = @_;
@@ -266,7 +282,8 @@ sub sortplusminus {
 	    push(@tmp, [ 'not', $scope, [ 'or', $scope, @{$self->{'forbiden'}} ] ]);
 	}
 	if(@{$self->{'optional'}} > 0) {
-	    push(@tmp, [ 'or', $scope, @{$self->{'optional'}},  [ 'true', $scope ] ]);
+	    my(@true) = $self->has_relevance() && @{$self->{'mandatory'}} > 0 ? [ 'true', $scope, $self->{'mandatory'}->[0] ] : ();
+	    push(@tmp, [ 'or', $scope, @{$self->{'optional'}}, @true ]);
 	}
 	$t = [ 'and', $scope, @tmp ];
     }
@@ -362,7 +379,24 @@ Returns a C<where> clause string corresponding to the C<Q1> syntactic tree.
 =item sortplusminus([], Q1)
 
 Translate the C<mandatory> and C<forbiden> syntactic nodes to their boolean 
-equivalents.
+equivalents. If it C<has_relevance> returns false and
+there is at least one C<mandatory> word, the first C<mandatory> word
+is added to the list of C<optional> words. 
+
+=item has_relevance()
+
+Returns true if relevance ranking is possible, false if not. It
+is used by the C<sortplusminus> function. Returns false by default.
+
+If relevance ranking is not possible, the semantic of the simple
+search is slighthly modified. When asking for C<+a b c> it shows
+all the documents containing C<a> and (C<b> or C<c>). 
+
+The normal behaviour is to return all the documents containing C<a>
+and to sort them to show first those containing (C<b> or C<c>). When
+relevance ranking is not available the C<b>, C<c> search terms are
+therefore useless. That is why we decided to change the semantic
+of the query if no relevance ranking is available.
 
 =back
 

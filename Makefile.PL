@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/Makefile.PL,v 1.1.1.1 1999/06/16 10:29:03 loic Exp $
+# $Header: /usr/local/cvsroot/Text-Query-SQL/Makefile.PL,v 1.2 1999/07/01 13:47:00 loic Exp $
 #
 # This -*- perl -*- script writes the Makefile for Catalog
 require 5.004;
@@ -26,7 +26,7 @@ use strict;
 
 use ExtUtils::MakeMaker;
 
-version_check('Text::Query', '0.06', 'require Text::Query;');
+version_check('Text::Query', '0.07', 'require Text::Query;');
 version_check('DBI', '1.06', 'require DBI;');
 
 #

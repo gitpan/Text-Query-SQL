@@ -28,11 +28,11 @@ plan test => 21;
 
     $question = "+10 20 -30";
     $query->prepare($question);
-    ok($query->matchstring(), " (  field1 contains  (  '10'  &  ~ (  (  '30'  )  )  &  (  '20'  |  ''  )  )   ) ", "prepare $question");
+    ok($query->matchstring(), " (  field1 contains  (  '10' weight 10  &  ~ (  (  '30' weight 10  )  )  &  (  '20' weight 10  |  '10'  )  )   ) ", "prepare $question");
 
     $question = "+10 20 -30 +'40 50' -60 70";
     $query->prepare($question);
-    ok($query->matchstring(), " (  field1 contains  (  '10'  &  '40 50'  &  ~ (  (  '30'  |  '60'  )  )  &  (  '20'  |  '70'  |  ''  )  )   ) ", "prepare $question");
+    ok($query->matchstring(), " (  field1 contains  (  '10' weight 10  &  '40 50' weight 10  &  ~ (  (  '30' weight 10  |  '60' weight 10  )  )  &  (  '20' weight 10  |  '70' weight 10  |  '10'  )  )   ) ", "prepare $question");
 
 }
 

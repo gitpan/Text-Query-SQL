@@ -28,11 +28,11 @@ plan test => 21;
 
     $question = "+10 20 -30";
     $query->prepare($question);
-    ok($query->matchstring(), " (  ( field1 regexp '[[:<:]]10[[:>:]]' and  not (  ( field1 regexp '[[:<:]]30[[:>:]]' )  )  and  ( field1 regexp '[[:<:]]20[[:>:]]' or 1 = 1 )  )  ) ", "prepare $question");
+    ok($query->matchstring(), " (  ( field1 regexp '[[:<:]]10[[:>:]]' and  not (  ( field1 regexp '[[:<:]]30[[:>:]]' )  )  and  ( field1 regexp '[[:<:]]20[[:>:]]' )  )  ) ", "prepare $question");
 
     $question = "+10 20 -30 +'40 50' -60 70";
     $query->prepare($question);
-    ok($query->matchstring(), " (  ( field1 regexp '[[:<:]]10[[:>:]]' and field1 regexp '[[:<:]]40 50[[:>:]]' and  not (  ( field1 regexp '[[:<:]]30[[:>:]]' or field1 regexp '[[:<:]]60[[:>:]]' )  )  and  ( field1 regexp '[[:<:]]20[[:>:]]' or field1 regexp '[[:<:]]70[[:>:]]' or 1 = 1 )  )  ) ", "prepare $question");
+    ok($query->matchstring(), " (  ( field1 regexp '[[:<:]]10[[:>:]]' and field1 regexp '[[:<:]]40 50[[:>:]]' and  not (  ( field1 regexp '[[:<:]]30[[:>:]]' or field1 regexp '[[:<:]]60[[:>:]]' )  )  and  ( field1 regexp '[[:<:]]20[[:>:]]' or field1 regexp '[[:<:]]70[[:>:]]' )  )  ) ", "prepare $question");
 
 }
 

@@ -52,8 +52,62 @@ sub destroydb {
 
 builddb();
 
-plan test => 11;
+plan test => 14;
 
+#
+# Simple search
+#
+{
+    my(@rows);
+    my($question);
+    my($builder) = builder();
+    my($rel) = relevance_info();
+    my($query) = Text::Query->new('blurk',
+				  -parse => 'Text::Query::ParseSimple',
+				  -build => $builder,
+				  -solve => 'Text::Query::SolveSQL',
+				  -fields_searched => 'field2',
+				  -select => "select $rel->{'select'}field1 from t1 where __WHERE__ order by $rel->{'order'}field1 asc",
+				  );
+
+    $question = "20";
+    $query->prepare($question);
+    @rows = $query->match($db);
+    print scalar(@rows) . " => $rows[0]->{upperlower('field1')},$rows[1]->{upperlower('field1')},$rows[2]->{upperlower('field1')}\n";
+    ok(@rows == 3 &&
+       $rows[0]->{upperlower('field1')} eq '19' &&
+       $rows[1]->{upperlower('field1')} eq '20' &&
+       $rows[2]->{upperlower('field1')} eq '21'
+       , 1, $query->matchstring());
+
+    $question = "20 -21";
+    $query->prepare($question);
+    @rows = $query->match($db);
+    print scalar(@rows) . " => $rows[0]->{upperlower('field1')}\n";
+    ok(@rows == 1 &&
+       $rows[0]->{upperlower('field1')} eq '19', 1, $query->matchstring());
+
+    $question = "20 +21";
+    $query->prepare($question);
+    @rows = $query->match($db);
+    if($rel->{'field'}) {
+	print scalar(@rows) . "values => $rows[0]->{upperlower('field1')},$rows[1]->{upperlower('field1')},$rows[2]->{upperlower('field1')}\n";
+	print scalar(@rows) . "relevance => $rows[0]->{upperlower($rel->{'field'})},$rows[1]->{upperlower($rel->{'field'})},$rows[2]->{upperlower($rel->{'field'})}\n";
+	ok(@rows == 3 &&
+	   $rows[0]->{upperlower('field1')} eq '20' &&
+	   $rows[1]->{upperlower('field1')} eq '21' &&
+	   $rows[2]->{upperlower('field1')} eq '22'
+	   , 1, $query->matchstring());
+    } else {
+	print scalar(@rows) . " => $rows[0]->{upperlower('field1')},$rows[1]->{upperlower('field1')}\n";
+	ok(@rows == 2 &&
+	   $rows[0]->{upperlower('field1')} eq '20', 1, $query->matchstring());
+    }
+}
+
+#
+# Advanced search
+#
 {
     my(@rows);
     my($question);

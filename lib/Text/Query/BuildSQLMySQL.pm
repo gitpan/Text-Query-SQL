@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQLMySQL.pm,v 1.2 1999/06/16 12:51:11 loic Exp $
+# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQLMySQL.pm,v 1.3 1999/07/01 11:32:11 loic Exp $
 #
 package Text::Query::BuildSQLMySQL;
 
@@ -94,18 +94,14 @@ sub resolve {
 sub resolve_literal {
     my($self, $t, $fill_fields) = @_;
 
-    if($$t[0] eq 'true') {
-	return "1 = 1";
+    my($value);
+    if(!$self->{parseopts}{-encoding} =~ /^big5$/io) {
+	$value = "__FIELD__ like '%" . $$t[2] . "%'";
     } else {
-	my($value);
-	if(!$self->{parseopts}{-encoding} =~ /^big5$/io) {
-	    $value = "__FIELD__ like '%" . $$t[2] . "%'";
-	} else {
-	    $value = "__FIELD__ regexp '[[:<:]]" . $$t[2] . "[[:>:]]'";
-	}
-
-	return $fill_fields ? $self->fill_fields($value, $$t[1]) : $value;
+	$value = "__FIELD__ regexp '[[:<:]]" . $$t[2] . "[[:>:]]'";
     }
+
+    return $fill_fields ? $self->fill_fields($value, $$t[1]) : $value;
 }
 
 #
