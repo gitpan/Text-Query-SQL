@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/SolveSQL.pm,v 1.3 1999/06/22 13:04:33 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/SolveSQL.pm,v 1.4 2000/02/22 18:42:23 loic Exp $
 #
 package Text::Query::SolveSQL;
 
@@ -97,7 +97,7 @@ returns a table of rows that match. Each row is a C<hashref>.
 =head1 SEE ALSO
 
 Text::Query(3)
-Text::Solve(3)
+Text::Query::Solve(3)
 
 =head1 AUTHORS
 

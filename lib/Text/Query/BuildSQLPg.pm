@@ -1,5 +1,5 @@
 #
-#   Copyright (C) 1999 Eric Bohlman, Loic Dachary
+#   Copyright (C) 2000 Benjamin Drieu
 #
 #   This program is free software; you can redistribute it and/or modify it
 #   under the terms of the GNU General Public License as published by the
@@ -16,9 +16,9 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQLFulcrum.pm,v 1.2 1999/07/01 11:32:11 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQLPg.pm,v 1.1 2000/03/21 14:10:48 benj2 Exp $
 #
-package Text::Query::BuildSQLFulcrum;
+package Text::Query::BuildSQLPg;
 
 use strict;
 
@@ -28,6 +28,27 @@ use Text::Query::BuildSQL;
 use Carp;
 
 @ISA = qw(Text::Query::BuildSQL);
+
+
+sub build_near {
+  my($self, $l, $r) = @_;
+
+  if($$l[0] ne 'literal' || $$r[0] ne 'literal') {
+      croak("cannot use near on non literal");
+  } elsif($$l[1] ne $$r[1]) {
+      croak("cannot use near with literals that does not belong to the same scope");
+  } else {
+      my($t);
+#      if(!$self->{parseopts}{-encoding} =~ /^big5$/io) {
+#	  $t = "$$l[2]%$$r[2]";
+#     } else {
+	  my($max) = $self->{parseopts}{-near};
+	  my($op) = "[^a-z0-9]{0,$max}";
+	  $t = "$$l[2]$op$$r[2]";
+#      }
+      return [ 'literal', $$l[1], $t ];
+  }
+}
 
 sub resolve {
     my($self, $scope, $t) = @_;
@@ -49,8 +70,8 @@ sub resolve {
 	shift(@{$scope});
 
 	my(%opmap) = (
-		      'and' => '&',
-		      'or' => '|'
+		      'and' => 'and',
+		      'or' => 'or'
 		      );
 	my($expr);
 	#
@@ -60,17 +81,17 @@ sub resolve {
 	    if($opmap{$$t[0]}) {
 		$expr = " ( " . join(" $opmap{$$t[0]} ", @operands) . " ) ";
 	    } elsif($$t[0] eq 'not') {
-		$expr = " ~ ( @operands ) ";
+		$expr = "not (@operands)";
 	    } elsif($$t[0] eq 'near') {
 		my($max) = $self->{parseopts}{-near};
-		$expr = " proximity $max characters ( " . join(" & ", @operands ) . " ) ";
+		$expr = "( " . join(" & ", @operands ) . " ) ";
 	    }
 	    #
 	    # If this expression is not enclosed in an homogenous form
 	    # resolve to explicit syntax
 	    #
 	    if($fill_fields) {
-		return $self->fill_fields(" __FIELD__ contains $expr ", $$t[1]);
+		return $self->fill_fields($expr, $$t[1]);
 	    } else {
 		#
 		# Otherwise just return the compact form
@@ -84,7 +105,7 @@ sub resolve {
 	    if($$t[0] eq 'or' or $$t[0] eq 'and') {
 		return " ( " . join(" $$t[0] ", @operands) . " ) ";
 	    } elsif($$t[0] eq 'not') {
-		return " not ( @operands ) ";
+		return "not (@operands) ";
 	    }
 	}
     }
@@ -113,22 +134,40 @@ sub resolve_literal {
 	    #
 	    # All search terms have a 10 weight
 	    #
-	    $weight = ' weight 10';
+#	    $weight = ' weight 10';
 	}
     }
     
-    my($value) = " '" . $self->quote($$t[2]) . "'$weight ";
+    my($value) = "'[[:<:]]" . $self->quote($$t[2]) . "[[:>:]]'";
 
-    if($fill_fields) {
-	return $self->fill_fields(" __FIELD__ contains $value", $$t[1]);
-    } else {
+#    if($fill_fields) {
+	return $self->fill_fields("__FIELD__ ~* $value", $$t[1]);
+#    } else {
 	#
 	# If the enclosing expression has the same scope, the distribution
 	# is delayed.
 	#
-	return $value;
-    }
+#	return $value;
+#    }
 }
+
+
+
+sub fill_fields {
+    my($self, $t, $fields) = @_;
+
+    return $t if($t !~ /__FIELD__/o);
+
+    my(@t);
+    my($scope);
+    foreach $scope (split(',', $fields)) {
+	my($tmp) = $t;
+	$tmp =~ s/__FIELD__/$scope/g;
+	push(@t, $tmp);
+    }
+    return @t == 1 ? $t[0] : "( ( " . join(" ) or ( ", @t) . " ) )";
+}
+
 
 1;
 
@@ -136,7 +175,7 @@ __END__
 
 =head1 NAME
 
-Text::Query::BuildSQLFulcrum - Builder for Fulcrum SearchServer
+Text::Query::BuildSQLPg - Builder for Postgres
 
 =head1 SYNOPSIS
 
@@ -144,13 +183,15 @@ Text::Query::BuildSQLFulcrum - Builder for Fulcrum SearchServer
   my $q=new Text::Query('hello and world',
                         -parse => 'Text::Query::ParseAdvanced',
                         -solve => 'Text::Query::SolveSQL',
-                        -build => 'Text::Query::BuildSQLFulcrum');
+                        -build => 'Text::Query::BuildSQLPg');
 
 
 =head1 DESCRIPTION
 
 Generates a well formed C<where> clause for Text::Query::ParseAdvanced or
-Text::Query::ParseSimple suitable for query with Fulcrum SearchServer.
+Text::Query::ParseSimple suitable for query with Postgres.
+
+Code is mainly based on Text:Query::BuildSQLMySQL.
 
 =head1 SEE ALSO
 
@@ -158,6 +199,8 @@ Text::Query(3)
 Text::Query::BuildSQL(3)
 
 =head1 AUTHORS
+
+Benjamin Drieu (bdrieu@april.org)
 
 Loic Dachary (loic@senga.org)
 

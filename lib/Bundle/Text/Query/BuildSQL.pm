@@ -1,6 +1,6 @@
 package Bundle::Text::Query::BuildSQL;
 
-$VERSION = "0.05";
+$VERSION = "0.07";
 
 1;
 
@@ -17,6 +17,8 @@ Bundle::Text::Query::BuildSQL - A bundle to install related modules
 =head1 CONTENTS
 
 DBI 1.06                   - Database independent interface for Perl
+
+Data::Dumper 2.09 	   - Stringified perl data structures
 
 Text::Query 0.07 	   - Parse and match Boolean expression
 

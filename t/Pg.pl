@@ -1,5 +1,5 @@
 #
-#   Copyright (C) 1998, 1999 Loic Dachary
+#   Copyright (C) 2000 Benjamin Drieu
 #
 #   This program is free software; you can redistribute it and/or modify it
 #   under the terms of the GNU General Public License as published by the
@@ -16,11 +16,10 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /cvsroot/TextQuery/Text-Query-SQL/t/mysql.pl,v 1.2 1999/06/16 11:13:41 loic Exp $
 #
 
 sub builder {
-    return 'Text::Query::BuildSQLMySQL';
+    return 'Text::Query::BuildSQLPg';
 }
 
 sub dbi_args {
@@ -32,11 +31,11 @@ sub upperlower {
 }
 
 sub t1_schema {
-    return undef if(!exists($ENV{'DBI_DSN'}) || $ENV{'DBI_DSN'} !~ /mysql/);
+    return undef if(!exists($ENV{'DBI_DSN'}) || $ENV{'DBI_DSN'} !~ /Pg/);
     return "
 create table t1 (
-	field1 char(32),
-	field2 char(128)
+	field1 varchar(32),
+	field2 varchar(128)
 )
 ";
 }
@@ -46,3 +45,5 @@ sub t1_drop { return "drop table t1"; }
 sub t1_postamble { return undef; }
 
 1;
+
+

@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQLMySQL.pm,v 1.3 1999/07/01 11:32:11 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQLMySQL.pm,v 1.3 1999/07/01 11:32:11 loic Exp $
 #
 package Text::Query::BuildSQLMySQL;
 

@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/BuildSQL.pm,v 1.4 1999/07/01 11:32:11 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQL.pm,v 1.7 2000/04/21 09:43:48 loic Exp $
 #
 package Text::Query::BuildSQL;
 
@@ -27,7 +27,7 @@ use vars qw(@ISA $VERSION);
 use Text::Query::Build;
 use Carp;
 
-$VERSION = "0.05";
+$VERSION = "0.07";
 
 @ISA = qw(Text::Query::Build);
 
@@ -359,14 +359,33 @@ Text::Query::BuildSQL - Base class for SQL query builders
 
 =head1 DESCRIPTION
 
-Defines all the C<build_*> functions to build a syntactic tree. The tree nodes
+Defines all the C<build_*> functions to build a syntax tree. The tree nodes
 are [ operator scope operand operand... ]. The C<build_final_expression> function
-translate the syntactic tree in a C<where> clause using the C<resolve> method.
+translate the syntax tree in a C<where> clause using the C<resolve> method.
 If the scope of the search is not specified (simple query or advanced query without
 scope operator), the scope is set to the list of comma separated fields provided
 by the C<-fields_searched> option.
 The resulting C<where> clause is placed in the C<select> order provided with
 the C<-select> option, if any.
+
+=head1 SYNTAX TREE
+
+The string enclosed in single quotes must match exactly. The <string> 
+token stands for an arbitrary string. A description enclosed in [something ...]
+means repeated 0 or N times.
+
+ expr: 'or' scope expr [expr ...]
+       'and' scope expr [expr ...]
+       'not' scope expr
+       'near' scope expr_literal expr_literal
+       'forbiden' scope expr_literal [expr_literal ...]
+       'mandatory' scope expr_literal [expr_literal ...]
+       'optional' scope expr_literal [expr_literal ...]
+       'literal' scope <string>
+
+ expr_literal: literal scope <string>
+
+ scope: <string>
 
 =head1 METHODS
 
@@ -374,7 +393,7 @@ the C<-select> option, if any.
 
 =item resolve([], Q1)
 
-Returns a C<where> clause string corresponding to the C<Q1> syntactic tree.
+Returns a C<where> clause string corresponding to the C<Q1> syntax tree.
 
 =item sortplusminus([], Q1)
 

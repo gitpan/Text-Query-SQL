@@ -1,3 +1,39 @@
+Fri Apr 21 11:39:51 2000  Loic Dachary  <loic@senga.org>
+
+	* Relase 0.07
+
+Tue Apr 11 11:03:27 2000  Loic Dachary  <loic@senga.org>
+
+	* t/21mifluz.t: regression test for mifluz
+
+	* lib/Text/Query/BuildSQLMifluz.pm (sortplusminus): do not
+	  re-order the syntax tree since mifluz is able to deal with
+	  this kind of queries directly.
+
+	* lib/Bundle/Text/Query/BuildSQL.pm: Add Data::Dumper dependency
+
+	* Makefile.PL: Add Data::Dumper dependency
+
+Thu Mar 23 09:44:21 2000  Loic Dachary  <loic@ceic.com>
+
+	* lib/Text/Query/BuildSQL.pm: Add description of the syntax tree in manual
+
+Tue Mar 21 15:00:48 2000  Benjamin Drieu  <bdrieu@april.org>
+
+	* add PostgreSQL support
+
+Mon Feb 21 13:54:26 2000  Loic Dachary  <loic@ceic.com>
+
+	* Relase 0.06
+	
+	* lib/Text/Query/BuildSQLMifluz.pm: add: simply return the
+	  syntax tree as a result, instead of a string. The Search::Mifluz
+	  interface knows its structure and is able to deal with it.
+
+Mon Feb 21 11:56:00 2000  Loic Dachary  <loic@ceic.com>
+
+	* lib/Text/Query/SolveSQL.pm: fix manual typo
+
 1999-07-01  Loic Dachary  <loic@ceic.com>
 
 	* add has_relevance to fix horribly wrong handling of Simple query

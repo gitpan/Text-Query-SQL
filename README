@@ -1,4 +1,4 @@
-$Header: /usr/local/cvsroot/Text-Query-SQL/README,v 1.3 1999/07/01 13:47:00 loic Exp $
+$Header: /cvsroot/TextQuery/Text-Query-SQL/README,v 1.4 2000/03/21 14:10:48 benj2 Exp $
 
 The Text-Query-SQL home page is http://www.senga.org/Text-Query-SQL/
 
@@ -24,8 +24,9 @@ SearchServer but one could easily add support for any other database
 Where is the documentation ?
 ----------------------------
 
-See the following manual pages : Text::Query::BuildSQL(3), Text::Query::BuildSQLFulcrum(3),
-Text::Query::BuildSQLMySQL(3), Text::Query::SolveSQL(3)
+See the following manual pages : Text::Query::BuildSQL(3),
+Text::Query::BuildSQLFulcrum(3), Text::Query::BuildSQLMySQL(3),
+Text::Query::BuildSQLPg(3), Text::Query::SolveSQL(3)
 
 How to install it ?
 -------------------
@@ -56,6 +57,10 @@ For Fulcrum:
 FULCRUM_HOME=/opt/fulcrum FULCREATE=/tmp FULSEARCH=/opt/fulcrum/fultext:/tmp \
   DBI_DSN=dbi:SearchServer: DBI_USER='' DBI_PASS='' \
   make TEST_FILES=t/02fulcrum.t test
+
+For PostgreSQL:
+
+DBI_DSN=dbi:Pg:dbname=test DBI_USER=user DBI_PASS=pass make TEST_FILES=t/06Pg.t test
 
 make install
 

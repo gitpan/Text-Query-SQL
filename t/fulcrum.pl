@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/t/fulcrum.pl,v 1.2 1999/06/16 11:13:41 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/t/fulcrum.pl,v 1.2 1999/06/16 11:13:41 loic Exp $
 #
 
 sub builder {
