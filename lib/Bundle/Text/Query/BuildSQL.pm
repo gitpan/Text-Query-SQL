@@ -20,7 +20,7 @@ DBI 1.13                   - Database independent interface for Perl
 
 Data::Dumper 2.101 	   - Stringified perl data structures
 
-Text::Query 0.08 	   - Parse and match Boolean expression
+Text::Query 0.07 	   - Parse and match Boolean expression
 
 =head1 DESCRIPTION
 

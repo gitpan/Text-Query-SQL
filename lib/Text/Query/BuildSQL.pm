@@ -16,7 +16,7 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQL.pm,v 1.7 2000/04/21 09:43:48 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/lib/Text/Query/BuildSQL.pm,v 1.9 2000/12/27 13:14:11 loic Exp $
 #
 package Text::Query::BuildSQL;
 
@@ -27,7 +27,7 @@ use vars qw(@ISA $VERSION);
 use Text::Query::Build;
 use Carp;
 
-$VERSION = "0.08";
+$VERSION = "0.09";
 
 @ISA = qw(Text::Query::Build);
 

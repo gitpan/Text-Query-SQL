@@ -16,9 +16,9 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /cvsroot/TextQuery/Text-Query-SQL/Makefile.PL,v 1.3 2000/04/12 16:35:28 loic Exp $
+# $Header: /cvsroot/TextQuery/Text-Query-SQL/Makefile.PL,v 1.5 2000/12/27 13:14:11 loic Exp $
 #
-# This -*- perl -*- script writes the Makefile for Catalog
+# This -*- perl -*- script writes the Makefile for Text-Query-SQL
 require 5.004;
 use strict;
 
@@ -26,7 +26,7 @@ use strict;
 
 use ExtUtils::MakeMaker;
 
-version_check('Text::Query', '0.08', 'require Text::Query;');
+version_check('Text::Query', '0.07', 'require Text::Query;');
 version_check('DBI', '1.13', 'require DBI;');
 version_check('Data::Dumper', '2.101', 'require Data::Dumper;');
 
@@ -48,7 +48,7 @@ sub version_check {
 	print " failed\n";
 	print <<EOT;
 $@
-Catalog needs $what module, version >= $min_version
+Text-Query-SQL needs $what module, version >= $min_version
 EOT
         exit;
     } else {
