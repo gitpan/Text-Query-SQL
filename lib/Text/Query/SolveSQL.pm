@@ -16,14 +16,14 @@
 #   Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. 
 #
 # 
-# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/SolveSQL.pm,v 1.2 1999/06/16 11:13:41 loic Exp $
+# $Header: /usr/local/cvsroot/Text-Query-SQL/lib/Text/Query/SolveSQL.pm,v 1.3 1999/06/22 13:04:33 loic Exp $
 #
 package Text::Query::SolveSQL;
 
 use strict;
 
-use Carp;
 use Text::Query::Solve;
+use Carp;
 
 use vars qw(@ISA);
 
